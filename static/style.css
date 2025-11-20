@@ -1,41 +1,127 @@
+/* ---- GLOBAL iPHONE LOOK ---- */
 body {
-    font-family: Arial;
-    background: #dcecff;
+    margin: 0;
+    padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
+    background: linear-gradient(180deg, #7b2ff7 0%, #9f44f8 40%, #ffffff 140%);
+    color: #ffffff;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    overflow-x: hidden;
+}
+
+/* Main container */
+.app-container {
+    width: 95%;
+    max-width: 500px;
+    padding-bottom: 40px;
+}
+
+/* SEARCH BAR */
+.search-box {
+    display: flex;
+    background: rgba(255, 255, 255, 0.28);
+    backdrop-filter: blur(15px);
+    padding: 12px 15px;
+    border-radius: 22px;
+    margin: 25px 0;
+}
+.search-box input {
+    flex: 1;
+    font-size: 18px;
+    border: none;
+    outline: none;
+    background: transparent;
+    color: #fff;
+}
+.search-box button {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: white;
+}
+
+/* CURRENT WEATHER */
+.current-weather {
     text-align: center;
 }
-
-.container {
-    width: 400px;
-    margin: auto;
-    margin-top: 80px;
-    padding: 20px;
-    background: white;
-    border-radius: 12px;
-    box-shadow: 0 0 10px #aaa;
+#location {
+    font-size: 34px;
+    font-weight: 600;
+}
+.main-temp {
+    font-size: 90px;
+    font-weight: 300;
+    margin: 0;
+    letter-spacing: -3px;
+}
+#description {
+    font-size: 22px;
+    opacity: 0.9;
+    margin-top: 10px;
 }
 
-input {
-    padding: 10px;
-    width: 70%;
-    font-size: 16px;
+/* DETAILS */
+.details-row {
+    display: flex;
+    justify-content: center;
+    gap: 45px;
+    margin-top: 18px;
+}
+.detail span {
+    font-size: 32px;
+    color: #f6d9ff;
+}
+.detail p {
+    margin-top: 6px;
+    font-size: 18px;
 }
 
-button {
-    padding: 10px 20px;
-    background: #3a7bd5;
-    border: none;
-    color: white;
-    border-radius: 6px;
-    cursor: pointer;
+/* FORECAST SECTION */
+.section-title {
+    font-size: 22px;
+    font-weight: 600;
+    margin-top: 35px;
+    margin-bottom: 10px;
+    margin-left: 2px;
 }
 
-.error {
-    color: red;
+/* SCROLL FORECAST (iPhone style) */
+.forecast-list {
+    display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    padding-bottom: 10px;
+}
+.forecast-list::-webkit-scrollbar {
+    display: none;
+}
+.forecast-item {
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(18px);
+    min-width: 130px;
+    border-radius: 22px;
+    padding: 18px 12px;
+    text-align: center;
+    font-size: 17px;
+    color: #ffeaff;
+}
+.forecast-temps {
+    margin-top: 10px;
+    font-size: 19px;
+    display: flex;
+    justify-content: space-between;
+}
+.min {
+    opacity: 0.6;
 }
 
-.weather-box {
-    margin-top: 20px;
-    padding: 15px;
-    background: #f4faff;
-    border-radius: 10px;
+/* HOURLY CHART */
+canvas {
+    margin-top: 25px;
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.15);
+    padding: 18px;
+    backdrop-filter: blur(15px);
 }
