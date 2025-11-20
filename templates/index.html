@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Weather App (Free API)</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="container">
+    <h1>🌤 Free Weather App</h1>
+
+    <form method="POST">
+        <input type="text" name="city" placeholder="Enter city name" required>
+        <button type="submit">Get Weather</button>
+    </form>
+
+    {% if error %}
+        <p class="error">{{ error }}</p>
+    {% endif %}
+
+    {% if weather %}
+        <div class="weather-box">
+            <h2>{{ weather.city }}</h2>
+            <p><strong>{{ weather.temperature }}°C</strong></p>
+            <p>Wind Speed: {{ weather.windspeed }} km/h</p>
+            <p>Weather Code: {{ weather.weathercode }}</p>
+        </div>
+    {% endif %}
+</div>
+
+</body>
+</html>
