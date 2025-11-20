@@ -1,0 +1,41 @@
+body {
+    font-family: Arial;
+    background: #dcecff;
+    text-align: center;
+}
+
+.container {
+    width: 400px;
+    margin: auto;
+    margin-top: 80px;
+    padding: 20px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 0 10px #aaa;
+}
+
+input {
+    padding: 10px;
+    width: 70%;
+    font-size: 16px;
+}
+
+button {
+    padding: 10px 20px;
+    background: #3a7bd5;
+    border: none;
+    color: white;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.error {
+    color: red;
+}
+
+.weather-box {
+    margin-top: 20px;
+    padding: 15px;
+    background: #f4faff;
+    border-radius: 10px;
+}
