@@ -1,32 +1,152 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
-    <title>Weather App (Free API)</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>iPhone Weather UI</title>
+
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded" rel="stylesheet">
 </head>
+
 <body>
 
-<div class="container">
-    <h1>🌤 Free Weather App</h1>
+<div class="app-container">
 
-    <form method="POST">
-        <input type="text" name="city" placeholder="Enter city name" required>
-        <button type="submit">Get Weather</button>
-    </form>
+    <!-- SEARCH BAR -->
+    <div class="search-box">
+        <input type="text" id="cityInput" placeholder="Search city...">
+        <button onclick="searchCity()">
+            <span class="material-symbols-rounded">search</span>
+        </button>
+    </div>
 
-    {% if error %}
-        <p class="error">{{ error }}</p>
-    {% endif %}
+    <!-- CURRENT WEATHER -->
+    <div class="current-weather">
+        <div id="location">Detecting...</div>
+        <div id="temp" class="main-temp">--°</div>
+        <div id="description">--</div>
 
-    {% if weather %}
-        <div class="weather-box">
-            <h2>{{ weather.city }}</h2>
-            <p><strong>{{ weather.temperature }}°C</strong></p>
-            <p>Wind Speed: {{ weather.windspeed }} km/h</p>
-            <p>Weather Code: {{ weather.weathercode }}</p>
+        <div class="details-row">
+            <div class="detail">
+                <span class="material-symbols-rounded">air</span>
+                <p id="wind">-- km/h</p>
+            </div>
+            <div class="detail">
+                <span class="material-symbols-rounded">schedule</span>
+                <p id="time">--</p>
+            </div>
         </div>
-    {% endif %}
+    </div>
+
+    <!-- FORECAST -->
+    <h2 class="section-title">7-Day Forecast</h2>
+    <div class="forecast-list" id="forecastList"></div>
+
+    <h2 class="section-title">Hourly Forecast</h2>
+    <canvas id="hourlyChart"></canvas>
+
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+
+window.onload = function () {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(pos => {
+            getWeatherByCoords(pos.coords.latitude, pos.coords.longitude);
+        }, () => {
+            searchWeather("Delhi");
+        });
+    }
+};
+
+function searchCity() {
+    let city = document.getElementById("cityInput").value;
+    if (city.trim() !== "") {
+        searchWeather(city);
+    }
+}
+
+function searchWeather(city) {
+    fetch("/weather", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({city})
+    })
+        .then(r => r.json())
+        .then(updateUI);
+}
+
+function getWeatherByCoords(lat, lon) {
+    fetch("/weather", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({lat, lon})
+    })
+        .then(r => r.json())
+        .then(updateUI);
+}
+
+function updateUI(d) {
+    if (!d || d.error) {
+        alert("City not found");
+        return;
+    }
+
+    document.getElementById("location").innerText = d.city;
+    document.getElementById("temp").innerText = d.temp + "°";
+    document.getElementById("description").innerText = d.description;
+    document.getElementById("wind").innerText = d.windspeed + " km/h";
+    document.getElementById("time").innerText = d.time;
+
+    renderForecast(d.daily);
+    renderHourlyChart(d.hourly);
+}
+
+function renderForecast(daily) {
+    let box = document.getElementById("forecastList");
+    box.innerHTML = "";
+    for (let i = 0; i < daily.time.length; i++) {
+        box.innerHTML += `
+        <div class="forecast-item">
+            <h4>${daily.time[i]}</h4>
+            <div class="forecast-temps">
+                <strong>${daily.temperature_2m_max[i]}°</strong>
+                <span class="min">${daily.temperature_2m_min[i]}°</span>
+            </div>
+        </div>
+        `;
+    }
+}
+
+let chart;
+function renderHourlyChart(hourly) {
+    const ctx = document.getElementById("hourlyChart").getContext("2d");
+    if (chart) chart.destroy();
+
+    chart = new Chart(ctx, {
+        type: "line",
+        data: {
+            labels: hourly.time.slice(0, 24),
+            datasets: [{
+                label: "Temperature (°C)",
+                data: hourly.temperature_2m.slice(0, 24),
+                borderWidth: 3,
+                borderColor: "#ffffff",
+                pointRadius: 0
+            }]
+        },
+        options: {
+            scales: { y: { beginAtZero: false } },
+            plugins: { legend: { display: false } }
+        }
+    });
+}
+
+</script>
 
 </body>
 </html>
