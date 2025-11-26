@@ -129,4 +129,3 @@ See the **LICENSE** file for full details.
 **Sannapaneni Sunil**
 
 ---
-Just tell me: **"Generate MIT License file"** or **"Give LinkedIn post"**.
